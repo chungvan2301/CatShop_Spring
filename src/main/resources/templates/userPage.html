@@ -1,0 +1,147 @@
+<!DOCTYPE HTML>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Trang chủ</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link th:href="@{/resources/css/index.css}" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/fontawesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/regular.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet" type="text/css" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <style>
+        .custom-dropdown {
+            position: relative;
+        }
+
+        .custom-dropdown .dropdown-menu {
+            position: absolute;
+        }
+        .custom-dropdown:hover .dropdown-menu {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header class="d-flex flex-wrap justify-content-between py-3 mb-4 border-bottom">
+        <a href="/" class="d-flex align-items-center mb-3 mb-md-0 text-dark text-decoration-none">
+            <img src="/images/logoShop.png" alt="Logo" width="100.4" height="42.4">
+        </a>
+        <ul class="nav nav-pills">
+            <li class="nav-item"><a href="/" class="nav-link" aria-current="page">HOME</a></li>
+            <li class="nav-item"><a href="/shop" class="nav-link">SHOP</a></li>
+            <li class="nav-item"><a href="/about" class="nav-link">ABOUT</a></li>
+            <li class="nav-item"><a href="/contact" class="nav-link">CONTACT</a></li>
+            <li th:if="${user.email == null}" class="nav-item">
+                <a href="/login" class="nav-link">LOGIN</a>
+            </li>
+            <li th:if="${user.email != null}" class="nav-item dropdown">
+                <ul class="navbar-nav mr-auto">
+                    <li th:if="${user.email != null}" class="nav-item custom-dropdown dropdown">
+                        <a style="color:blue;" href="#" class="nav-link dropdown-toggle" id="navbarDropdown" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                           th:text="'Xin chào ' + ${user.firstName}">Hello, ${user.firstName}</a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="/user">Tài khoản của tôi</a>
+                            <a class="dropdown-item" href="/cart">Giỏ hàng</a>
+                            <a class="dropdown-item" href="/receipt">Đơn mua</a>
+                            <a class="dropdown-item" href="/logout">Đăng xuất</a>
+                        </div>
+                    </li>
+                </ul>
+        </ul>
+    </header>
+</div>
+
+<div class="container">
+    <section class="w-100 p-4 d-flex justify-content-center pb-4">
+
+        <form style="width: 22rem;" th:action="@{/user/update}" method="post">
+            <input type="hidden" th:value="${user.id}" name="userId"/>
+            <div class="form-outline mb-4">
+                <p>Email</p>
+                <p class="font-italic" th:text="${user.email}">Email</p>
+            </div>
+            <div class="form-outline mb-4">
+                <p>Tên</p>
+                <input type="text" th:value="${user.firstName}" id="firstName" name="firstName" class="form-control" placeholder="" required="" autofocus="">
+            </div>
+            <div class="form-outline mb-4">
+                <p>Họ</p>
+                <input type="text" th:value="${user.lastName}" id="lastName" name="lastName" class="form-control" placeholder="" required="" autofocus="">
+            </div>
+            <div class="form-outline mb-4">
+                <p>Mật khẩu</p>
+                <p>********</p>
+                <button><a href="/user/changepassword">Đổi mật khẩu</a></button>
+            </div>
+            <input name="_csrf" type="hidden" value="rOhFKOcqMyNawmIay1vO71aaohcKgr5oyGlMwjV9snw5tKHwlY18HdEbBxF38wR_-nb622Ssj3U449xFrlB49VQZhx4PhJiW">
+
+            <!-- 2 column grid layout for inline styling -->
+            <div class="row mb-4">
+                <div class="col d-flex justify-content-center">
+
+                    <button type="submit" class="btn btn-primary btn-block mb-4">Thay đổi thông tin</button>
+                </div>
+            </div>
+        </form>
+    </section>
+
+</div>
+<div class="container">
+    <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+        <div class="col-md-4 d-flex align-items-center">
+
+            <a href="/" class="d-flex align-items-center mb-3 mb-md-0 text-dark text-decoration-none">
+                <img src="/images/logoShop.png" alt="Logo" width="100.4" height="42.4">
+            </a>
+        </div>
+
+        <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
+            <li class="mr-3">Contact us via</li>
+            <li class="ms-3"><a href="https://www.facebook.com/profile.php?id=100009209162245" style="margin-right: 20px;"><img src="/images/new-facebook-logo-2019.jpg" width="30" height="30"></a></li>
+            <li class="ms-3"><a href="https://www.instagram.com/van.nguyen2301/"><img src="/images/instagram-mobile-app-logo-instagram-app-icon-ig-app-free-free-vector.jpg" width="30" height="30"></a></li>
+        </ul>
+    </footer>
+</div>
+<input type="hidden" id="messageInfor" th:value="${messageInfor}" />
+<input type="hidden" id="messagePass" th:value="${messagePass}" />
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    toastr.options = {
+        closeButton: true,
+        debug: false,
+        newestOnTop: false,
+        progressBar: true,
+        positionClass: "toast-top-right",
+        preventDuplicates: false,
+        showDuration: "300",
+        hideDuration: "1000",
+        timeOut: "2000",
+        extendedTimeOut: "1000",
+        showEasing: "swing",
+        hideEasing: "linear",
+        showMethod: "fadeIn",
+        hideMethod: "fadeOut"
+    };
+    var msgInfor = document.getElementById('messageInfor').value;
+    var msgPass = document.getElementById('messagePass').value;
+
+    if (msgInfor === "successInforChange") {
+        toastr.success("Thay đổi thông tin thành công!");
+    } else if (msgPass === "successPassChange") {
+        toastr.success("Thay đổi mật khẩu thành công!");
+    }
+
+});
+</script>
+</body>
+</html>

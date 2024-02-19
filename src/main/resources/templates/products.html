@@ -1,0 +1,83 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Quản lý sản phẩm</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link th:href="@{/resources/css/index.css}" rel="stylesheet"/>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+	
+	<div class="container">
+    <header class="d-flex flex-wrap justify-content-between py-3 mb-4 border-bottom">
+      <a href="/" class="d-flex align-items-center mb-3 mb-md-0 text-dark text-decoration-none">
+        <img src="/images/logoShop.png" alt="Logo" width="100.4" height="42.4">
+      </a>
+
+      <ul class="nav nav-pills">
+        <li class="nav-item nav-link" style="border: 1px solid black; color: black;">Xin chào Admin</a></li>
+        <li class="nav-item"><a href="/logout" class="nav-link">Logout</a></li>
+      </ul>
+    </header>
+	</div>
+	
+    <div class="container">
+        <h1 class="text-center">Chào mừng đến với trang admin quản lý sản phẩm!</h1>
+    </div>
+    
+    <div class="container">
+		    <button type="button" class="btn btn-outline-primary mb-3">
+            	<a href="/admin/products/add" style="text-decoration: none;">Thêm mới sản phẩm</a>
+            </button>
+
+            <form>
+
+                <table class="table table-bordered">
+                	<tr>
+                		<th>ID</th>
+                		<th>Tên sản phẩm</th>
+                		<th>Loại</th>
+                		<th>Giá</th>
+						<th>Số lượng</th>
+                		<th>Mô tả</th>
+                		<th>Hình ảnh</th>
+                		<th>Chỉnh sửa</th>
+                		<th>Xóa</th>
+                	</tr>
+
+                	<tr th:each="product, iStat : ${products}">
+					    <td th:text="${iStat.index + 1}">1</td>
+					    <td th:text="${product.name}">Laury</td>
+					    <td th:text="${product.category.name}">Laury</td>
+					    <td  th:text="${#numbers.formatDecimal(product.price,1, 'COMMA', 0, 'DEFAULT')}">Laury</td>
+						<td th:text="${product.quantityInStore}">Laury</td>
+					    <td th:text="${product.description}">Laury</td>
+					    <td><img src="" height="100px" width="100px" th:src="@{${'/productImages/'+product.imageName}}"></td>
+					    <td>
+					        <button type="button" class="">
+					            <a th:href="@{/admin/products/edit/{id}(id=${product.id})}">Edit</a>
+					        </button>
+					    </td>
+					    <td>
+					        <button type="button" class="">
+					            <a th:href="@{/admin/products/delete/{id}(id=${product.id})}">Delete</a>
+					        </button>
+					    </td>
+					</tr>
+
+                </table>
+
+            </form>
+
+
+			
+        </div>
+	
+    
+
+</body>
+</html>

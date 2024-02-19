@@ -1,0 +1,71 @@
+h2 {
+    color:red;
+    font-size: 16px;
+}
+
+p {
+	color: black;
+	margin-bottom: 5 px;
+}
+
+.dropdown:hover>.dropdown-menu {
+    display: block;
+}
+.dropdown>.dropdown-toggle:active {
+     pointer-events: none;
+}
+
+h5 {
+    color: red;
+}
+
+.modal-second {
+  z-index: 1052;
+}
+
+.modal-backdrop.fade {
+  & + .modal-backdrop.fade {
+    z-index: 1051;
+  }
+}
+
+
+.radio-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .radio-input {
+            margin-right: 10px;
+            opacity: 0;
+            position: absolute;
+        }
+
+        .radio-label {
+            position: relative;
+            cursor: pointer;
+            padding-left: 30px; /* Khoảng cách từ checkbox đến nội dung */
+        }
+
+        .radio-custom {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 20px; /* Chiều cao của checkbox */
+            width: 20px; /* Chiều rộng của checkbox */
+            background-color: #fff; /* Màu nền của checkbox */
+            border: 1px solid #ddd; /* Viền của checkbox */
+            border-radius: 50%; /* Độ cong của checkbox để tạo hình tròn */
+            transition: background-color 0.3s;
+        }
+
+        .radio-input:checked + .radio-label .radio-custom {
+            background-color: #4CAF50; /* Màu nền khi được chọn */
+            border-color: #4CAF50; /* Màu viền khi được chọn */
+        }
+
+        /* Hiệu ứng khi hover */
+        .radio-label:hover .radio-custom {
+            background-color: #f3f3f3; /* Màu nền khi hover */
+        }
+

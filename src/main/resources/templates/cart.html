@@ -1,0 +1,130 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Shop</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link th:href="@{/resources/css/index.css}" rel="stylesheet"/>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/fontawesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/regular.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet" type="text/css" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/cart.js"></script>
+    <style>
+        .custom-dropdown {
+            position: relative;
+        }
+
+        .custom-dropdown .dropdown-menu {
+            position: absolute;
+        }
+        .custom-dropdown:hover .dropdown-menu {
+            display: block;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <header class="d-flex flex-wrap justify-content-between py-3 mb-4 border-bottom">
+        <a href="/" class="d-flex align-items-center mb-3 mb-md-0 text-dark text-decoration-none">
+            <img src="/images/logoShop.png" alt="Logo" width="100.4" height="42.4">
+        </a>
+        <ul class="nav nav-pills">
+            <li class="nav-item"><a href="/" class="nav-link">HOME</a></li>
+            <li class="nav-item"><a href="/shop" class="nav-link" aria-current="page">SHOP</a></li>
+            <li class="nav-item"><a href="/about" class="nav-link">ABOUT</a></li>
+            <li class="nav-item"><a href="/contact" class="nav-link">CONTACT</a></li>
+            <li class="nav-item dropdown">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item custom-dropdown dropdown">
+                        <a style="color:blue;" href="#" class="nav-link dropdown-toggle" id="navbarDropdown" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                           th:text="'Xin chào ' + ${user.firstName}">Hello, ${user.firstName}</a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="/user">Tài khoản của tôi</a>
+                            <a class="dropdown-item" href="/cart">Giỏ hàng</a>
+                            <a class="dropdown-item" href="/receipt">Đơn mua</a>
+                            <a class="dropdown-item" href="/logout">Đăng xuất</a>
+                        </div>
+                    </li>
+                </ul>
+        </ul>
+    </header>
+</div>
+
+<div class="container">
+    <div class="container">
+        <h1 style="font-size: 28px; color: purple" th:text="'Giỏ hàng của '+${user.lastName}+' '+${user.firstName}">Giỏ hàng của tôi</h1>
+    </div>
+    <div class="row justify-content-between mt-3">
+        <div class="mb-3">
+            <table class="table table-bordered">
+                <tr>
+                    <th>Tên sản phẩm</th>
+                    <th>Hình ảnh</th>
+                    <th>Số lượng</th>
+                    <th>Đơn Giá</th>
+                    <th>Thành Tiền</th>
+                    <th>Thao tác</th>
+                    <th>Chọn</th>
+                </tr>
+
+                <tr th:each="cart, iStat : ${carts}">
+                    <td th:text="${cart.product.name}">Laury</td>
+                    <td><img src="" height="100px" width="100px" th:src="@{${'/productImages/'+cart.product.imageName}}"></td>
+                    <td><input type="number" th:data-cart-id="${cart.id}" data-price="${cart.product.price}" onchange="updateQuantity(this)" th:value="${cart.quantity}"></td>
+                    <td th:text="${#numbers.formatDecimal(cart.product.price,1, 'COMMA', 0, 'DEFAULT')}">Laury</td>
+                    <td th:id="'cartPrice'+${cart.id}" th:text="${#numbers.formatDecimal(cart.product.price*cart.quantity,1, 'COMMA', 0, 'DEFAULT')}">Laury</td>
+                    <td>
+                        <form th:action="@{/cart/delete/{id}(id=${cart.id})}" method="post">
+                            <button type="submit" class="">
+                                Delete
+                            </button>
+                        </form>
+                    </td>
+                    <td>
+                        <input class="ml-2" type="checkbox" th:value="${cart.id}" onchange="updateCartStatus(this)">
+                    </td>
+                </tr>
+
+            </table>
+        </div>
+
+        <form class="mt-3 d-flex flex-column justify-content-between" th:action="@{/thanhtoan}" method="get">
+            <div class="row mb-3">
+                <h1 style="font-size:18px; margin-left: 40vw;">Tổng giá sản phẩm:</h1>
+                <h1 id="sum" style="font-size:20px; color:red; right:0; position:absolute; font-weight:bolder; margin-right:20vw;">0</h1>
+            </div>
+            <button id="buttonCheckout" style="max-width:200px; margin-left:52vw;" type="submit" class="btn btn-danger btn-lg" disabled title="Vui lòng chọn sản phẩm">Thanh toán</button>
+        </form>
+    </div>
+</div>
+<input type="hidden" id="userId" th:value="${user.id}">
+
+<div class="container">
+    <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+        <div class="col-md-4 d-flex align-items-center">
+
+            <a href="/" class="d-flex align-items-center mb-3 mb-md-0 text-dark text-decoration-none">
+                <img src="/images/logoShop.png" alt="Logo" width="100.4" height="42.4">
+            </a>
+        </div>
+
+        <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
+            <li class="mr-3">Contact us via</li>
+            <li class="ms-3"><a href="https://www.facebook.com/profile.php?id=100009209162245" style="margin-right: 20px;"><img src="/images/new-facebook-logo-2019.jpg" width="30" height="30"></a></li>
+            <li class="ms-3"><a href="https://www.instagram.com/van.nguyen2301/"><img src="/images/instagram-mobile-app-logo-instagram-app-icon-ig-app-free-free-vector.jpg" width="30" height="30"></a></li>
+        </ul>
+    </footer>
+</div>
+<script>
+</script>
+</body>
+</html>
