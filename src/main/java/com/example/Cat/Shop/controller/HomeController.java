@@ -63,16 +63,14 @@ public class HomeController {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (!Objects.equals(authentication.getName(), "anonymousUser")) {
 			user = userService.userLoggedIn(request);
-
 			String role = user.getRoles().get(0).getName();
-			model.addAttribute("user", user);
 			model.addAttribute("role", role);
-			return "index";
-
-		} else {
-			model.addAttribute("user", user);
-			return "index";
 		}
+
+		model.addAttribute("productsOutstanding", productService.getOutstandingProducts());
+		model.addAttribute("productsSoldOut", productService.getSoldOutProducts());
+		model.addAttribute("user", user);
+		return "index";
 	}
 
 	//Page shop mặc định
@@ -275,6 +273,12 @@ public class HomeController {
 		}
 			model.addAttribute("user",user);
 			return "contact";
+	}
+
+	@PostMapping("/contact")
+	public String contactInformation(@RequestBody String name, @RequestBody String email,RedirectAttributes redirectAttributes) {
+		redirectAttributes.addFlashAttribute("message","message");
+		return "redirect:/contact";
 	}
 
 	//Giỏ hàng **************************************

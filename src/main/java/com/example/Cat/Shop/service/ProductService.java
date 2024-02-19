@@ -14,10 +14,7 @@ import java.lang.reflect.Array;
 import java.security.spec.InvalidKeySpecException;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -196,6 +193,19 @@ public class ProductService {
 		Votes++;
 		productRating.setReportVotes(Votes);
 		productRatingRepo.save(productRating);
+	}
+
+	//Index page
+	public List<Product> getOutstandingProducts () {
+		List<Product> products = new ArrayList<>();
+		products = productRepo.findTop4ByProductStatusOrderByAddDateDesc("new");
+		return products;
+	}
+
+	public List<Product> getSoldOutProducts () {
+		List<Product> products = new ArrayList<>();
+		products = productRepo.findTop4ByOrderByQuantitySoldDesc();
+		return products;
 	}
 
 	//Others

@@ -24,4 +24,9 @@ public interface ProductRepo extends JpaRepository <Product, Long> {
 
 	List<Product> findByCategoryIdAndPriceBetweenAndProductStatusIn(int id, int minPrice, int maxPrice, Set<String> productStatuses);
 	List<Product> findByCategoryIdAndPriceBetweenAndProductStatusIn(int id, int minPrice, int maxPrice, Set<String> productStatuses, Pageable pageable);
+
+	List<Product> findTop4ByProductStatusOrderByAddDateDesc (String productStatus);
+
+	List<Product> findTop4ByOrderByQuantitySoldDesc();
+
 }

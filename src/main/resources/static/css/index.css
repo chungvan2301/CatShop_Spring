@@ -69,3 +69,32 @@ h5 {
             background-color: #f3f3f3; /* Màu nền khi hover */
         }
 
+.modal-adv {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content-adv {
+    position: relative;
+    margin: 10% auto;
+    padding: 20px;
+    background-color: #fff;
+    max-width: 600px;
+}
+
+.close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 30px;
+    cursor: pointer;
+}
+
+

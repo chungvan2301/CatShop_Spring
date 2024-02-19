@@ -1,0 +1,146 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Shop</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link th:href="@{/resources/css/index.css}" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/fontawesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/regular.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.11.2/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script type="text/javascript" src="/js/receipt.js"></script>
+    <style>
+        .custom-dropdown {
+            position: relative;
+        }
+
+        .custom-dropdown .dropdown-menu {
+            position: absolute;
+        }
+        .custom-dropdown:hover .dropdown-menu {
+            display: block;
+        }
+
+        .image-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .image-container img {
+            max-width: 45px; /* Giới hạn chiều rộng của ảnh */
+            max-height: 45px; /* Giới hạn chiều cao của ảnh */
+            margin-right: 10px; /* Khoảng cách giữa ảnh và chữ */
+        }
+        .card,.selection {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px;
+            cursor: pointer;
+        }
+
+        .selected {
+            border-color: blue;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <header class="d-flex flex-wrap justify-content-between py-3 mb-4 border-bottom">
+        <a href="/" class="d-flex align-items-center mb-3 mb-md-0 text-dark text-decoration-none">
+            <img src="/images/logoShop.png" alt="Logo" width="100.4" height="42.4">
+        </a>
+        <ul class="nav nav-pills">
+            <li class="nav-item"><a href="/" class="nav-link">HOME</a></li>
+            <li class="nav-item"><a href="/shop" class="nav-link" aria-current="page">SHOP</a></li>
+            <li class="nav-item"><a href="/about" class="nav-link">ABOUT</a></li>
+            <li class="nav-item"><a href="/contact" class="nav-link">CONTACT</a></li>
+            <li class="nav-item dropdown">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item custom-dropdown dropdown">
+                        <a style="color:blue;" href="#" class="nav-link dropdown-toggle" id="navbarDropdown" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                           th:text="'Xin chào ' + ${user.firstName}">Hello, ${user.firstName}</a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="/user">Tài khoản của tôi</a>
+                            <a class="dropdown-item" href="/cart">Giỏ hàng</a>
+                            <a class="dropdown-item" href="/receipt">Đơn mua</a>
+                            <a class="dropdown-item" href="/logout">Đăng xuất</a>
+                        </div>
+                    </li>
+                </ul>
+        </ul>
+    </header>
+</div>
+
+<div class="container">
+    <h1>Đơn mua</h1>
+    <p th:if="${receipts.size()==0}" >Bạn chưa có đơn hàng nào!</p>
+</div>
+
+<div class="container" th:each="receipt, status : ${receipts}">
+    <a style="text-decoration:none; color:black;" th:href="@{/receipt/{index}(index=${status.index})}"><div class="container border border-3 mt-3 position-relative">
+        <div class="container row justify-content-between">
+            <p class="mb-0 font-italic" th:text="'Mã đơn hàng: '+${receipt.receiptCode}"></p>
+            <p class="mb-0 font-italic" th:text="'Ngày tạo đơn: '+${receipt.dateCreated}"></p>
+        </div>
+
+        <div class="container row justify-content-between">
+            <div style="max-width:500px;" class="image-container">
+                <img th:src="@{${'/productImages/'+receipt.cartsList[0].product.imageName}}" alt="Product Image">
+                <span th:text="${receipt.cartsList[0].product.name}">Laury</span>
+            </div>
+            <div class="">
+                <p style="text-align: center;" class="mb-1" th:text="'x'+${receipt.cartsList[0].quantity}"></p>
+                <p class="currency" style="color:red; font-weight:bolder;" th:text="${#numbers.formatDecimal(receipt.cartsList[0].quantity*receipt.cartsList[0].product.price,1, 'COMMA', 0, 'DEFAULT')}"></p>
+            </div>
+        </div>
+
+        <div class="container row justify-content-between">
+            <p style="font-size:13px;" class="font-weight-light" th:text="${receipt.cartsList.size()}+' sản phẩm'"></p>
+            <div>
+                <span class="mr-1">Thành tiền:</span>
+                <span class="currency" style="color:red; font-weight:bolder;" th:text="${#numbers.formatDecimal(receipt.totalPrice,1, 'COMMA', 0, 'DEFAULT')}"></span>
+            </div>
+        </div>
+
+    </div></a>
+</div>
+
+
+
+
+
+    <div class="container">
+        <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+            <div class="col-md-4 d-flex align-items-center">
+
+                <a href="/" class="d-flex align-items-center mb-3 mb-md-0 text-dark text-decoration-none">
+                    <img src="/images/logoShop.png" alt="Logo" width="100.4" height="42.4">
+                </a>
+            </div>
+
+            <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
+                <li class="mr-3">Contact us via</li>
+                <li class="ms-3"><a href="https://www.facebook.com/profile.php?id=100009209162245" style="margin-right: 20px;"><img src="/images/new-facebook-logo-2019.jpg" width="30" height="30"></a></li>
+                <li class="ms-3"><a href="https://www.instagram.com/van.nguyen2301/"><img src="/images/instagram-mobile-app-logo-instagram-app-icon-ig-app-free-free-vector.jpg" width="30" height="30"></a></li>
+            </ul>
+        </footer>
+        <input type="hidden" id="sucessfullPaid" th:value="${sucessfullPaid}">
+    </div>
+    <script>
+
+    </script>
+</body>
+</html>

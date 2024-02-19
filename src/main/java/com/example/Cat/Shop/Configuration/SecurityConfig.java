@@ -51,7 +51,7 @@ public class SecurityConfig {
 		http
 			.headers(headers->headers.frameOptions(frameOptionsConfig -> frameOptionsConfig.sameOrigin()))
 			.authorizeHttpRequests(requests -> requests
-					.requestMatchers("/shop","/","/home","/about","/contact","/register","/shop/**").permitAll()
+					.requestMatchers("/shop","/","/home","/about","/contact","/register","/shop/**","/forgot-password").permitAll()
 					.requestMatchers("/admin/**","/admin").hasRole("ADMIN")
 					.anyRequest().authenticated()
 			)		
@@ -70,11 +70,6 @@ public class SecurityConfig {
 		
 		return http.build();
 	}
-//	@Bean
-//	public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
-//		return configuration.getAuthenticationManager();
-//	}
-
 
 	@Bean
 	public BCryptPasswordEncoder bCryptPasswordEncoder() {
