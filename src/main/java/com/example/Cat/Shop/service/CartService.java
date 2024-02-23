@@ -16,10 +16,8 @@ import java.util.Optional;
 public class CartService {
     @Autowired
     private UserRepo userRepo;
-
     @Autowired
     ProductRepo productRepo;
-
     @Autowired
     CartRepo cartRepo;
 
