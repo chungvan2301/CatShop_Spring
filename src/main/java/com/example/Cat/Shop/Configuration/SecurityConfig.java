@@ -102,7 +102,7 @@ public class SecurityConfig {
 			.clientSecret("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")
 			.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
 			.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-			.redirectUri("http://localhost:8080/login/oauth2/code/google")
+			.redirectUri("https://catshop-van-c0af0c150b39.herokuapp.com/login/oauth2/code/google")
 			.scope("openid", "profile", "email", "address", "phone")
 			.authorizationUri("https://accounts.google.com/o/oauth2/v2/auth")
 			.tokenUri("https://www.googleapis.com/oauth2/v4/token")
