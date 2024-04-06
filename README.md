@@ -1,4 +1,11 @@
 <div>
+  <h2>
+    Cat Shop 
+  </h2>
+  <p>
+    Cat Shop built with Spring Boot, JPA, Spring Security, MySQL, Hibernate and Thymeleaf
+  </p>
+<div>
   <h1>
     1. Home Page
   </h1>
