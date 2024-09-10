@@ -98,11 +98,11 @@ public class SecurityConfig {
 	
 	private ClientRegistration googleClientRegistration() {
 		return ClientRegistration.withRegistrationId("google")
-			.clientId("814934428768-9dp8fg377ln4dh3rjqe92fraccle0109.apps.googleusercontent.com")
-			.clientSecret("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")
+			.clientId("************")
+			.clientSecret("************")
 			.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
 			.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-			.redirectUri("https://catshop-van-c0af0c150b39.herokuapp.com/login/oauth2/code/google")
+			.redirectUri("http://localhost:8080/login/oauth2/code/google")
 			.scope("openid", "profile", "email", "address", "phone")
 			.authorizationUri("https://accounts.google.com/o/oauth2/v2/auth")
 			.tokenUri("https://www.googleapis.com/oauth2/v4/token")
